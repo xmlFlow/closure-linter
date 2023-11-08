@@ -145,7 +145,7 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
     line = ''.join(line)
     line = line.rstrip('\n\r\f')
     try:
-      length = len(unicode(line, 'utf-8'))
+      length = len(line)
     except (LookupError, UnicodeDecodeError):
       # Unknown encoding. The line length may be wrong, as was originally the
       # case for utf-8 (see bug 1735846). For now just accept the default
@@ -846,7 +846,7 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
 
     try:
       self._indentation.Finalize()
-    except Exception, e:
+    except Exception as e:
       self._HandleError(
           errors.FILE_DOES_NOT_PARSE,
           str(e),
