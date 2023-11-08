@@ -163,7 +163,7 @@ def RunMetaDataPass(start_token, metadata_pass, error_handler, filename=''):
 
   try:
     metadata_pass.Process(start_token)
-  except ecmametadatapass.ParseError, parse_err:
+  except ecmametadatapass.ParseError as parse_err:
     if flags.FLAGS.error_trace:
       traceback.print_exc()
     error_token = parse_err.token
