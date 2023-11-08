@@ -22,7 +22,6 @@ __author__ = ('robbyw@google.com (Robert Walker)',
 import copy
 from io import StringIO
 
-from past.builtins import xrange
 
 from closure_linter.common import tokens
 from closure_linter.javascripttokens import JavaScriptToken
@@ -243,7 +242,7 @@ def DeleteTokens(token, token_count):
     token: The token to start deleting at.
     token_count: The total number of tokens to delete.
   """
-  for i in xrange(1, token_count):
+  for i in range(1, token_count):
     DeleteToken(token.next)
   DeleteToken(token)
 
@@ -443,7 +442,7 @@ def GoogScopeOrNoneFromStartBlock(token):
   #      5    4    3   21 ^
 
   maybe_goog_scope = token
-  for unused_i in xrange(5):
+  for unused_i in range(5):
     maybe_goog_scope = (maybe_goog_scope.previous if maybe_goog_scope and
                         maybe_goog_scope.previous else None)
   if maybe_goog_scope and maybe_goog_scope.string == 'goog.scope':

@@ -87,7 +87,7 @@ class ScriptExtractor(htmllib.HTMLParser):
     """
     # We append 'x' to both sides of the string to ensure that splitlines
     # gives us an accurate count.
-    for i in xrange(len(('x' + data + 'x').splitlines()) - 1):
+    for i in range(len(('x' + data + 'x').splitlines()) - 1):
       self._text += '\n'
 
   def GetScriptLines(self):

@@ -26,13 +26,13 @@ def _CreateDummyToken():
 
 def _CreateDummyTokens(count):
   dummy_tokens = []
-  for _ in xrange(count):
+  for _ in range(count):
     dummy_tokens.append(_CreateDummyToken())
   return dummy_tokens
 
 
 def _SetTokensAsNeighbors(neighbor_tokens):
-  for i in xrange(len(neighbor_tokens)):
+  for i in range(len(neighbor_tokens)):
     prev_index = i - 1
     next_index = i + 1
 

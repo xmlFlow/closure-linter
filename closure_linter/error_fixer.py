@@ -249,7 +249,7 @@ class ErrorFixer(errorhandler.ErrorHandler):
         num_lines *= -1
         should_delete = True
 
-      for unused_i in xrange(1, num_lines + 1):
+      for unused_i in range(1, num_lines + 1):
         if should_delete:
           # TODO(user): DeleteToken should update line numbers.
           self._DeleteToken(token.previous)
@@ -552,7 +552,7 @@ class ErrorFixer(errorhandler.ErrorHandler):
       token_count: The total number of tokens to delete.
     """
     if token == self._file_token:
-      for unused_i in xrange(token_count):
+      for unused_i in range(token_count):
         self._file_token = self._file_token.next
 
     tokenutil.DeleteTokens(token, token_count)
