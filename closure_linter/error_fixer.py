@@ -577,8 +577,8 @@ class ErrorFixer(errorhandler.ErrorHandler):
       f = self._external_file
       if not f:
         error_noun = 'error' if self._file_fix_count == 1 else 'errors'
-        print 'Fixed %d %s in %s' % (
-            self._file_fix_count, error_noun, self._file_name)
+        print('Fixed %d %s in %s' % (
+            self._file_fix_count, error_noun, self._file_name))
         f = open(self._file_name, 'w')
 
       token = self._file_token
@@ -608,8 +608,8 @@ class ErrorFixer(errorhandler.ErrorHandler):
             f.write(original_lines[token.orig_line_number - 1])
           line = ''
           if char_count > 80 and token.line_number in self._file_changed_lines:
-            print 'WARNING: Line %d of %s is now longer than 80 characters.' % (
-                token.line_number, self._file_name)
+            print('WARNING: Line %d of %s is now longer than 80 characters.' % (
+                token.line_number, self._file_name))
 
           char_count = 0
 

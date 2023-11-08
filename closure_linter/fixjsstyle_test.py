@@ -48,8 +48,7 @@ class FixJsStyleTest(googletest.TestCase):
         ['fixjsstyle.html.in.html', 'fixjsstyle.html.out.html'],
         ['fixjsstyle.oplineend.in.js', 'fixjsstyle.oplineend.out.js']]
     for [running_input_file, running_output_file] in test_cases:
-      print 'Checking %s vs %s' % (running_input_file, running_output_file)
-      input_filename = None
+      print('Checking %s vs %s' % (running_input_file, running_output_file))      input_filename = None
       golden_filename = None
       current_filename = None
       try:

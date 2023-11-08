@@ -173,12 +173,10 @@ def _PrintFileSummary(paths, records):
 
   for path in paths:
     path_errors = [e for e in records if e.path == path]
-    print '%s: %d' % (path, len(path_errors))
-
+    print('%s: %d' % (path, len(path_errors)))
 
 def _PrintFileSeparator(path):
-  print '----- FILE  :  %s -----' % path
-
+  print('----- FILE  :  %s -----' % path)
 
 def _PrintSummary(paths, error_records):
   """Print a summary of the number of errors and files."""
@@ -188,8 +186,7 @@ def _PrintSummary(paths, error_records):
   all_paths_count = len(all_paths)
 
   if error_count is 0:
-    print '%d files checked, no errors found.' % all_paths_count
-
+    print('%d files checked, no errors found.' % all_paths_count)
   new_error_count = len([e for e in error_records if e.new_error])
 
   error_paths = set([e.path for e in error_records])
@@ -223,8 +220,7 @@ def _PrintErrorRecords(error_records):
       if not FLAGS.unix_mode:
         _PrintFileSeparator(current_path)
 
-    print record.error_string
-
+    print(record.error_string)
 
 def _FormatTime(t):
   """Formats a duration as a human-readable string.
@@ -310,16 +306,14 @@ def main(argv=None):
         fix_args.append(flag)
 
     if not FLAGS.quiet:
-      print """
-Some of the errors reported by GJsLint may be auto-fixable using the script
+      print(""")Some of the errors reported by GJsLint may be auto-fixable using the script
 fixjsstyle. Please double check any changes it makes and report any bugs. The
 script can be run by executing:
 
 fixjsstyle %s """ % ' '.join(fix_args)
 
   if FLAGS.time:
-    print 'Done in %s.' % _FormatTime(time.time() - start_time)
-
+    print('Done in %s.' % _FormatTime(time.time() - start_time))
   sys.exit(exit_code)
 
 

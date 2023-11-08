@@ -187,8 +187,7 @@ class IndentationRules(object):
     if (is_first and
         token_type not in (Type.COMMENT, Type.DOC_PREFIX, Type.STRING_TEXT)):
       if flags.FLAGS.debug_indentation:
-        print 'Line #%d: stack %r' % (token.line_number, stack)
-
+        print('Line #%d: stack %r' % (token.line_number, stack))
       # Ignore lines that start in JsDoc since we don't check them properly yet.
       # TODO(robbyw): Support checking JsDoc indentation.
       # Ignore lines that start as multi-line strings since indentation is N/A.
