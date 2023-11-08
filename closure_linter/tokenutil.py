@@ -20,7 +20,9 @@ __author__ = ('robbyw@google.com (Robert Walker)',
               'ajp@google.com (Andy Perelson)')
 
 import copy
-import StringIO
+from io import StringIO
+
+from past.builtins import xrange
 
 from closure_linter.common import tokens
 from closure_linter.javascripttokens import JavaScriptToken

@@ -17,7 +17,7 @@
 
 __author__ = ('nnaze@google.com (Nathan Naze)')
 
-import StringIO
+from io import StringIO
 
 
 import mox

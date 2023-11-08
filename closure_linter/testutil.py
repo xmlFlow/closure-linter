@@ -21,7 +21,7 @@
 
 __author__ = ('nnaze@google.com (Nathan Naze)')
 
-import StringIO
+from io import StringIO
 
 from closure_linter import ecmametadatapass
 from closure_linter import javascriptstatetracker
