@@ -98,7 +98,7 @@ class Token(object):
     Returns:
       Whether the token is the last token in its line.
     """
-    return not self.next or self.next.line_number != self.line_number
+    return not self.__next__ or self.next.line_number != self.line_number
 
   def IsType(self, token_type):
     """Tests if this token is of the given type.
@@ -120,7 +120,7 @@ class Token(object):
     Returns:
       True if the type of this token is any of the types passed in.
     """
-    if not isinstance(token_types[0], basestring):
+    if not isinstance(token_types[0], str):
       return self.type in token_types[0]
     else:
       return self.type in token_types
@@ -135,7 +135,7 @@ class Token(object):
     node = self
     while node:
       yield node
-      node = node.next
+      node = node.__next__
 
   def __reversed__(self):
     """Returns a reverse-direction token iterator."""

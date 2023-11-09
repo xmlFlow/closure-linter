@@ -38,7 +38,7 @@ def TokenizeSource(source):
     The first token of the resulting token stream.
   """
 
-  if isinstance(source, basestring):
+  if isinstance(source, str):
     source = StringIO.StringIO(source)
 
   tokenizer = javascripttokenizer.JavaScriptTokenizer()

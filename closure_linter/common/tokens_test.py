@@ -90,7 +90,7 @@ class TokensTest(googletest.TestCase):
 
   def testRepr(self):
     a = tokens.Token('foo', 'fakeType1', 1, 1)
-    self.assertEquals('<Token: fakeType1, "foo", None, 1, None>', str(a))
+    self.assertEqual('<Token: fakeType1, "foo", None, 1, None>', str(a))
 
   def testIter(self):
     dummy_tokens = _CreateDummyTokens(5)

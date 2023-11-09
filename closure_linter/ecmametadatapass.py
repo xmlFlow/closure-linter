@@ -468,7 +468,7 @@ class EcmaMetaDataPass(object):
       if self._token.IsCode():
         self._last_code = self._token
 
-      self._token = self._token.next
+      self._token = self._token.__next__
 
     try:
       self._PopContextType(self, EcmaContext.ROOT)

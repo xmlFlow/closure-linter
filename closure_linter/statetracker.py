@@ -248,7 +248,7 @@ class DocFlag(object):
         # b/10407058. If the flag is expected to be followed by a type then
         # search for type in same line only. If no token after flag in same
         # line then conclude that no type is specified.
-        self.type_start_token = flag_token.next
+        self.type_start_token = flag_token.__next__
         self.type_end_token, self.type = _GetEndTokenAndContents(
             self.type_start_token)
         if self.type is not None:
@@ -470,7 +470,7 @@ class DocComment(object):
         Type.IDENTIFIER,
         Type.SIMPLE_LVALUE])
 
-    token = self.end_token.next
+    token = self.end_token.__next__
     while token:
       if token.type in target_types:
         return token
@@ -502,7 +502,7 @@ class DocComment(object):
       if token.type not in skip_types:
         return
 
-      token = token.next
+      token = token.__next__
 
   def CompareParameters(self, params):
     """Computes the edit distance and list from the function params to the docs.
@@ -601,7 +601,7 @@ def _GetMatchingEndBraceAndContents(start_brace):
   contents = []
 
   # We don't consider the start brace part of the type string.
-  token = start_brace.next
+  token = start_brace.__next__
   while open_count != close_count:
     if token.type == Type.DOC_START_BRACE:
       open_count += 1
@@ -613,7 +613,7 @@ def _GetMatchingEndBraceAndContents(start_brace):
 
     if token.type in Type.FLAG_ENDING_TYPES:
       break
-    token = token.next
+    token = token.__next__
 
   #Don't include the end token (end brace, end doc comment, etc.) in type.
   token = token.previous
@@ -635,7 +635,7 @@ def _GetNextPartialIdentifierToken(start_token):
   Returns:
     The token found containing identifier, None otherwise.
   """
-  token = start_token.next
+  token = start_token.__next__
 
   while token and token.type not in Type.FLAG_ENDING_TYPES:
     match = javascripttokenizer.JavaScriptTokenizer.IDENTIFIER.search(
@@ -643,7 +643,7 @@ def _GetNextPartialIdentifierToken(start_token):
     if match is not None and token.type == Type.COMMENT:
       return token
 
-    token = token.next
+    token = token.__next__
 
   return None
 
@@ -696,7 +696,7 @@ def _GetEndTokenAndContents(start_token):
       contents += iterator.string
       last_token = iterator
 
-    iterator = iterator.next
+    iterator = iterator.__next__
     if iterator.line_number != last_line:
       contents += '\n'
       last_line = iterator.line_number
@@ -971,7 +971,7 @@ class StateTracker(object):
     if self._cumulative_params:
       params = re.compile(r'\s+').sub('', self._cumulative_params).split(',')
       # Strip out the type from parameters of the form name:Type.
-      params = map(lambda param: param.split(':')[0], params)
+      params = [param.split(':')[0] for param in params]
 
     return params
 

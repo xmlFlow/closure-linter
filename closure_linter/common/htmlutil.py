@@ -18,10 +18,10 @@
 
 __author__ = ('robbyw@google.com (Robert Walker)')
 
-import cStringIO
+import io
 import formatter
 import htmllib
-import HTMLParser
+import html.parser
 import re
 
 
@@ -146,14 +146,14 @@ def StripTags(str):
       str = strip.get_output()
       final_text += str
       finished = True
-    except HTMLParser.HTMLParseError, e:
+    except html.parser.HTMLParseError as e:
       final_text += str[:e.offset]
       str = str[e.offset + 1:]
 
   return final_text
 
 
-class _HtmlStripper(HTMLParser.HTMLParser):
+class _HtmlStripper(html.parser.HTMLParser):
   """Simple class to strip tags from HTML.
 
   Does so by doing nothing when encountering tags, and appending character data
@@ -161,7 +161,7 @@ class _HtmlStripper(HTMLParser.HTMLParser):
   """
   def __init__(self):
     self.reset()
-    self.__output = cStringIO.StringIO()
+    self.__output = io.StringIO()
 
   def handle_data(self, d):
     self.__output.write(d)

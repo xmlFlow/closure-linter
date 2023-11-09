@@ -261,7 +261,7 @@ class TypeAnnotation(object):
 
 def Parse(token, token_end, error_handler):
   """Parses a type annotation and returns a TypeAnnotation object."""
-  return TypeAnnotationParser(error_handler).Parse(token.next, token_end)
+  return TypeAnnotationParser(error_handler).Parse(token.__next__, token_end)
 
 
 class TypeAnnotationParser(object):
@@ -371,7 +371,7 @@ class TypeAnnotationParser(object):
         current.tokens.append(token)
         self.Error(token, 'Unexpected token')
 
-      token = token.next
+      token = token.__next__
 
     self.Append(current, error_token=token)
     try:

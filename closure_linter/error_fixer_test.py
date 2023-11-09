@@ -34,7 +34,7 @@ class ErrorFixerTest(googletest.TestCase):
 
   def testDeleteToken(self):
     start_token = testutil.TokenizeSourceAndRunEcmaPass(_TEST_SCRIPT)
-    second_token = start_token.next
+    second_token = start_token.__next__
     self.error_fixer.HandleFile('test_file', start_token)
 
     self.error_fixer._DeleteToken(start_token)
@@ -43,7 +43,7 @@ class ErrorFixerTest(googletest.TestCase):
 
   def testDeleteTokens(self):
     start_token = testutil.TokenizeSourceAndRunEcmaPass(_TEST_SCRIPT)
-    fourth_token = start_token.next.next.next
+    fourth_token = start_token.next.next.__next__
     self.error_fixer.HandleFile('test_file', start_token)
 
     self.error_fixer._DeleteTokens(start_token, 3)
@@ -56,9 +56,9 @@ class ErrorFixerTest(googletest.TestCase):
     jstype = comments[0].GetDocFlags()[0].jstype
     self.error_fixer.HandleFile('unittest', None)
     self.error_fixer._FixJsDocPipeNull(jstype)
-    self.assertEquals(expected, repr(jstype))
+    self.assertEqual(expected, repr(jstype))
     result = tokenutil.TokensToString(jstype.FirstToken()).strip('} */')
-    self.assertEquals(expected, result)
+    self.assertEqual(expected, result)
 
   def testFixJsDocPipeNull(self):
     self.DoTestFixJsDocPipeNull('?Object', 'Object|null')

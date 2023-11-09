@@ -169,12 +169,12 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
               token)
 
     elif token.type == Type.DOUBLE_QUOTE_STRING_START:
-      next_token = token.next
+      next_token = token.__next__
       while next_token.type == Type.STRING_TEXT:
         if javascripttokenizer.JavaScriptTokenizer.SINGLE_QUOTE.search(
             next_token.string):
           break
-        next_token = next_token.next
+        next_token = next_token.__next__
       else:
         self._HandleError(
             errors.UNNECESSARY_DOUBLE_QUOTED_STRING,
@@ -209,7 +209,7 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
         # precede some code, skip it.
         # NOTE: The tokenutil methods are not used here because of their
         # behavior at the top of a file.
-        next_token = token.next
+        next_token = token.__next__
         if (not next_token or
             (not is_file_level_comment and
              next_token.type in Type.NON_CODE_TYPES)):
@@ -269,7 +269,7 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
 
     elif token.type == Type.END_BLOCK:
       if state.InFunction() and state.IsFunctionClose():
-        is_immediately_called = (token.next and
+        is_immediately_called = (token.__next__ and
                                  token.next.type == Type.START_PAREN)
 
         function = state.GetFunction()
@@ -366,14 +366,14 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
               token,
               position=Position.AtBeginning())
 
-        extra_space = state.GetLastNonSpaceToken().next
+        extra_space = state.GetLastNonSpaceToken().__next__
         while extra_space != token:
           if extra_space.type == Type.BLANK_LINE:
             self._HandleError(
                 errors.EXTRA_LINE,
                 'Extra line between constructor and goog.inherits',
                 extra_space)
-          extra_space = extra_space.next
+          extra_space = extra_space.__next__
 
         # TODO(robbyw): Test the last function was a constructor.
         # TODO(robbyw): Test correct @extends and @implements documentation.
@@ -406,7 +406,7 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
           if missing_provides:
             self._ReportMissingProvides(
                 missing_provides,
-                tokenutil.GetLastTokenInSameLine(token).next,
+                tokenutil.GetLastTokenInSameLine(token).__next__,
                 False)
 
           # If there are no require statements, missing requires should be
@@ -417,7 +417,7 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
             if missing_requires:
               self._ReportMissingRequires(
                   missing_requires,
-                  tokenutil.GetLastTokenInSameLine(token).next,
+                  tokenutil.GetLastTokenInSameLine(token).__next__,
                   True)
             if illegal_alias_statements:
               self._ReportIllegalAliasStatement(illegal_alias_statements)
@@ -457,7 +457,7 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
           if missing_requires:
             self._ReportMissingRequires(
                 missing_requires,
-                tokenutil.GetLastTokenInSameLine(token).next,
+                tokenutil.GetLastTokenInSameLine(token).__next__,
                 False)
           if illegal_alias_statements:
             self._ReportIllegalAliasStatement(illegal_alias_statements)
@@ -550,7 +550,7 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
       if state.IsFunctionClose():
         # Pop the stack and report any remaining locals as unused.
         unused_local_variables = self._unused_local_variables_by_scope.pop()
-        for unused_token in unused_local_variables.values():
+        for unused_token in list(unused_local_variables.values()):
           self._HandleError(
               errors.UNUSED_LOCAL_VARIABLE,
               'Unused local variable: %s.' % unused_token.string,
@@ -626,7 +626,7 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
         errors.MISSING_GOOG_PROVIDE,
         missing_provides_msg,
         token, position=Position.AtBeginning(),
-        fix_data=(missing_provides.keys(), need_blank_line))
+        fix_data=(list(missing_provides.keys()), need_blank_line))
 
   def _ReportMissingRequires(self, missing_requires, token, need_blank_line):
     """Reports missing require statements to the error handler.
@@ -657,11 +657,11 @@ class JavaScriptLintRules(ecmalintrules.EcmaScriptLintRules):
         errors.MISSING_GOOG_REQUIRE,
         missing_requires_msg,
         token, position=Position.AtBeginning(),
-        fix_data=(missing_requires.keys(), need_blank_line))
+        fix_data=(list(missing_requires.keys()), need_blank_line))
 
   def _ReportIllegalAliasStatement(self, illegal_alias_statements):
     """Reports alias statements that would need a goog.require."""
-    for namespace, token in illegal_alias_statements.iteritems():
+    for namespace, token in illegal_alias_statements.items():
       self._HandleError(
           errors.ALIAS_STMT_NEEDS_GOOG_REQUIRE,
           'The alias definition would need the namespace \'%s\' which is not '

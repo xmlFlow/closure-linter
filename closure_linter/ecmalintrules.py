@@ -364,11 +364,11 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
               self._HandleError(
                   errors.ILLEGAL_SEMICOLON_AFTER_FUNCTION,
                   'Illegal semicolon after function declaration',
-                  token.next, position=Position.All(token.next.string))
+                  token.__next__, position=Position.All(token.next.string))
 
         # A semicolon should be included at the end of a function expression
         # that is not immediately called or used by a dot operator.
-        if (state.InAssignedFunction() and token.next
+        if (state.InAssignedFunction() and token.__next__
             and token.next.type != Type.SEMICOLON):
           next_token = tokenutil.GetNextCodeToken(token)
           is_immediately_used = next_token and (
@@ -385,13 +385,13 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
                             'Interface methods cannot contain code', last_code)
 
       elif (state.IsBlockClose() and
-            token.next and token.next.type == Type.SEMICOLON):
+            token.__next__ and token.next.type == Type.SEMICOLON):
         if (last_code.metadata.context.parent.type != Context.OBJECT_LITERAL
             and last_code.metadata.context.type != Context.OBJECT_LITERAL):
           self._HandleError(
               errors.REDUNDANT_SEMICOLON,
               'No semicolon is required to end a code block',
-              token.next, position=Position.All(token.next.string))
+              token.__next__, position=Position.All(token.next.string))
 
     elif token_type == Type.SEMICOLON:
       if token.previous and token.previous.type == Type.WHITESPACE:
@@ -399,7 +399,7 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
             errors.EXTRA_SPACE, 'Extra space before ";"',
             token.previous, position=Position.All(token.previous.string))
 
-      if token.next and token.next.line_number == token.line_number:
+      if token.__next__ and token.next.line_number == token.line_number:
         if token.metadata.context.type != Context.FOR_GROUP_BLOCK:
           # TODO(robbyw): Error about no multi-statement lines.
           pass
@@ -409,7 +409,7 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
           self._HandleError(
               errors.MISSING_SPACE,
               'Missing space after ";" in for statement',
-              token.next,
+              token.__next__,
               position=Position.AtBeginning())
 
       last_code = token.metadata.last_code
@@ -482,7 +482,7 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
     elif token_type == Type.WHITESPACE:
       if self.ILLEGAL_TAB.search(token.string):
         if token.IsFirstInLine():
-          if token.next:
+          if token.__next__:
             self._HandleError(
                 errors.ILLEGAL_TAB,
                 'Illegal tab in whitespace before "%s"' % token.next.string,
@@ -550,7 +550,7 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
           self._HandleError(errors.INVALID_AUTHOR_TAG_DESCRIPTION,
                             'Author tag line should be of the form: '
                             '@author foo@somewhere.com (Your Name)',
-                            token.next)
+                            token.__next__)
         else:
           # Check spacing between email address and name. Do this before
           # checking earlier spacing so positions are easier to calculate for
@@ -559,11 +559,11 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
           if num_spaces < 1:
             self._HandleError(errors.MISSING_SPACE,
                               'Missing space after email address',
-                              token.next, position=Position(result.start(2), 0))
+                              token.__next__, position=Position(result.start(2), 0))
           elif num_spaces > 1:
             self._HandleError(
                 errors.EXTRA_SPACE, 'Extra space after email address',
-                token.next,
+                token.__next__,
                 position=Position(result.start(2) + 1, num_spaces - 1))
 
           # Check for extra spaces before email address. Can't be too few, if
@@ -572,7 +572,7 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
           if num_spaces > 1:
             self._HandleError(errors.EXTRA_SPACE,
                               'Extra space before email address',
-                              token.next, position=Position(1, num_spaces - 1))
+                              token.__next__, position=Position(1, num_spaces - 1))
 
       elif (flag.flag_type in state.GetDocFlag().HAS_DESCRIPTION and
             not self._limited_doc_checks):
@@ -743,25 +743,25 @@ class EcmaScriptLintRules(checkerbase.LintRulesBase):
               # JavaScript care but languages such as ActionScript or Java
               # that allow variables to be typed don't care.
               if not self._limited_doc_checks:
-                self.HandleMissingParameterDoc(token, params_iter.next())
+                self.HandleMissingParameterDoc(token, next(params_iter))
 
             elif op == 'D':
               # Deletion
               self._HandleError(errors.EXTRA_PARAMETER_DOCUMENTATION,
                                 'Found docs for non-existing parameter: "%s"' %
-                                docs_iter.next(), token)
+                                next(docs_iter), token)
             elif op == 'S':
               # Substitution
               if not self._limited_doc_checks:
                 self._HandleError(
                     errors.WRONG_PARAMETER_DOCUMENTATION,
                     'Parameter mismatch: got "%s", expected "%s"' %
-                    (params_iter.next(), docs_iter.next()), token)
+                    (next(params_iter), next(docs_iter)), token)
 
             else:
               # Equality - just advance the iterators
-              params_iter.next()
-              docs_iter.next()
+              next(params_iter)
+              next(docs_iter)
 
     elif token_type == Type.STRING_TEXT:
       # If this is the first token after the start of the string, but it's at

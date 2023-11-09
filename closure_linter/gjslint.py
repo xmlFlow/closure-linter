@@ -150,7 +150,7 @@ def _CheckPath(path):
   runner.Run(path, error_handler)
 
   make_error_record = lambda err: errorrecord.MakeErrorRecord(path, err)
-  return map(make_error_record, error_handler.GetErrors())
+  return list(map(make_error_record, error_handler.GetErrors()))
 
 
 def _GetFilePaths(argv):
@@ -173,10 +173,10 @@ def _PrintFileSummary(paths, records):
 
   for path in paths:
     path_errors = [e for e in records if e.path == path]
-    print('%s: %d' % (path, len(path_errors)))
+    print(('%s: %d' % (path, len(path_errors))))
 
 def _PrintFileSeparator(path):
-  print('----- FILE  :  %s -----' % path)
+  print(('----- FILE  :  %s -----' % path))
 
 def _PrintSummary(paths, error_records):
   """Print a summary of the number of errors and files."""
@@ -186,7 +186,7 @@ def _PrintSummary(paths, error_records):
   all_paths_count = len(all_paths)
 
   if error_count is 0:
-    print('%d files checked, no errors found.' % all_paths_count)
+    print(('%d files checked, no errors found.' % all_paths_count))
   new_error_count = len([e for e in error_records if e.new_error])
 
   error_paths = set([e.path for e in error_records])
@@ -198,7 +198,7 @@ def _PrintSummary(paths, error_records):
     new_error_noun = 'error' if new_error_count == 1 else 'errors'
     error_file_noun = 'file' if error_paths_count == 1 else 'files'
     ok_file_noun = 'file' if no_error_paths_count == 1 else 'files'
-    print ('Found %d %s, including %d new %s, in %d %s (%d %s OK).' %
+    print(('Found %d %s, including %d new %s, in %d %s (%d %s OK).' %
            (error_count,
             error_noun,
             new_error_count,
@@ -206,7 +206,7 @@ def _PrintSummary(paths, error_records):
             error_paths_count,
             error_file_noun,
             no_error_paths_count,
-            ok_file_noun))
+            ok_file_noun)))
 
 
 def _PrintErrorRecords(error_records):
@@ -220,7 +220,7 @@ def _PrintErrorRecords(error_records):
       if not FLAGS.unix_mode:
         _PrintFileSeparator(current_path)
 
-    print(record.error_string)
+    print((record.error_string))
 
 def _FormatTime(t):
   """Formats a duration as a human-readable string.
@@ -306,15 +306,15 @@ def main(argv=None):
         fix_args.append(flag)
 
     if not FLAGS.quiet:
-      print('''
+      print(('''
 Some of the errors reported by GJsLint may be auto-fixable using the script
 fixjsstyle. Please double check any changes it makes and report any bugs. The
 script can be run by executing:
 
-fixjsstyle %s ''' % ' '.join(fix_args))
+fixjsstyle %s ''' % ' '.join(fix_args)))
 
   if FLAGS.time:
-    print('Done in %s.' % _FormatTime(time.time() - start_time))
+    print(('Done in %s.' % _FormatTime(time.time() - start_time)))
   sys.exit(exit_code)
 
 

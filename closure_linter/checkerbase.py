@@ -189,4 +189,4 @@ class CheckerBase(object):
         pass_function(token)
         self._state_tracker.HandleAfterToken(token)
 
-      token = token.next
+      token = token.__next__

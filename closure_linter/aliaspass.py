@@ -245,4 +245,4 @@ class AliasPass(object):
         if flag and flag.HasType() and flag.jstype:
           _SetTypeAlias(flag.jstype, alias_map)
 
-      token = token.next  # Get next token
+      token = token.__next__  # Get next token

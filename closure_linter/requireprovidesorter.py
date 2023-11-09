@@ -138,7 +138,7 @@ class RequireProvideSorter(object):
         tokenutil.DeleteToken(i)
 
     # Save token to rest of file. Sorted token will be inserted before this.
-    rest_of_file = tokens_map[strings[-1]][-1].next
+    rest_of_file = tokens_map[strings[-1]][-1].__next__
 
     # Re-add all tokens in the map in alphabetical order.
     insert_after = tokens[0].previous
@@ -175,7 +175,7 @@ class RequireProvideSorter(object):
           # should use, add 'goog.module' to the list above and implement the
           # decision.
           break
-      token = token.next
+      token = token.__next__
 
     return tokens
 
@@ -272,7 +272,7 @@ class RequireProvideSorter(object):
       if not token:
         raise Exception('ran out of tokens')
       token_list.append(token)
-      token = token.next
+      token = token.__next__
     token_list.append(last_token)
 
     return token_list
